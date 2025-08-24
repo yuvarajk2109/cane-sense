@@ -8,3 +8,9 @@ In Tamil Nadu, sugarcane is one of the most significant cash crops. However, wit
 + To enable initiatives to localize and prevent disease spread through water irrigation control mechanisms through a recommender system trained on thorough sugarcane cultivation data.
 + To provide simplified, easy-to-use voice-based navigational pathways in native languages for efficient and effective access of the system for farmers.
 + To achieve high accuracy and speed in disease classification through minimal epoch and optimized parameter training.
+
+### Novelty
+
++ Achieving maximal coverage of various sugarcane disease types, using balanced data from different sources and elegantly combining them, and suggesting appropriate irrigation control mechanisms.
++ Providing various input and output transmission modes, making the system user-friendly and universal.
++ Focusing on weeds, pests, and diseases, thereby enabling a comprehensive study and handling of various factors that affect sugarcane cultivation.
