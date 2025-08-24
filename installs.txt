@@ -1,6 +1,6 @@
 pip install pandas
 pip install matplotlib
-pip install torch
+pip install seaborn
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 pip install tqdm
-pip install torchvision
 pip install torchmetrics
