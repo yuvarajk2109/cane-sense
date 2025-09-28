@@ -55,7 +55,7 @@ def conv_block(cin, cout, k=3, s=1, p=1):
         nn.ReLU(inplace=True),
     )
 
-class SugarNet(nn.Module):
+class SymNet(nn.Module):
     def __init__(self, num_classes, dropout=dropout):
         super().__init__()
         self.stem = nn.Sequential(
@@ -98,7 +98,7 @@ class SugarNet(nn.Module):
         x = self.head(x)
         return x
     
-model = SugarNet(num_classes).to(device)
+model = SymNet(num_classes).to(device)
 
 criterion = nn.CrossEntropyLoss(label_smoothing=label_smoothing)
 optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
@@ -149,8 +149,8 @@ for epoch in range(1, epochs + 1):
         scheduler.step()
 
     print(f"Epoch {epoch:02d}/{epochs} | "
-          f"Train Loss {train_loss:.4f}, Accuracy {train_acc:.4f} | "
-          f"Test Loss {test_loss:.4f}, Accuracy {test_acc:.4f}")
+          f"Train Loss: {train_loss:.4f}, Accuracy: {train_acc:.4f} | "
+          f"Test Loss: {test_loss:.4f}, Accuracy: {test_acc:.4f}")
 
     if test_acc > best_acc:
         best_acc = test_acc
