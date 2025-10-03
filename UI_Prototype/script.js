@@ -10,11 +10,11 @@ function previewImage(event) {
 function analyseImage() {
     const resultBox = document.getElementById("result");
     resultBox.style.display = "block";
-    resultBox.innerHTML = "<b>Prediction:</b> Rust Disease (CaneSight simulated output)";
+    resultBox.innerHTML = "<b>Disease:</b> CaneSight prediction placeholder.";
 }
 
 function recordVoice() {
-    alert("Voice recording simulation: Your voice will be converted to text (ASR module placeholder).");
+    alert("ASR placeholder.");
 }
 
 function getAnswer() {
@@ -24,6 +24,6 @@ function getAnswer() {
     if (question.trim() === "") {
         answerBox.innerHTML = "<b>Answer:</b> Please ask a valid question.";
     } else {
-        answerBox.innerHTML = "<b>Answer:</b> This is a placeholder response for your query: '" + question + "'";
+        answerBox.innerHTML = "<b>Answer:</b> CaneSpeak response placeholder.";
     }
 }
