@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaneSight Prototype</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        
+        <h1>Sugarcane Disease Detection & Irrigation Control</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Upload Sugarcane Leaf</h2>
+            <div class="upload-box">
+                <label for="leafUpload" class="upload-label">
+                    <p id="uploadText" style="cursor: pointer;">Click to upload sugarcane leaf image</p>
+                    <input type="file" id="leafUpload" accept="image/*" onchange="previewImage(event)">
+                    <img id="preview" style="display:none; max-width:100%; margin-top:10px; border-radius:8px;">
+                </label>
+            </div>
+            <br>
+            <button onclick="analyseImage()">Analyse</button>
+            <div id="result" class="result-box" style="display:none;"></div>
+        </section>
+
+        <section>
+            <h2>Ask a Question</h2>
+            <div class="qa-box">
+                <input type="text" id="questionInput" placeholder="Type your question here...">
+                <button class="voice-btn" onclick="recordVoice()">🎤</button>
+                <button onclick="getAnswer()">Ask</button>
+            </div>
+            <div id="answer" class="answer-box" style="display:none;"></div>
+        </section>
+    </main>
+</body>
+</html>
