@@ -48,13 +48,6 @@ imageUpload.addEventListener("change", () => {
     }
 });
 
-imageUpload.addEventListener("change", () => {
-if (imageUpload.files.length > 0) {
-    
-    }
-});
-
-
 const chatHistory = document.getElementById("chatHistory");
 const chatInput = document.getElementById("chatInput");
 const sendBtn = document.getElementById("sendBtn");
