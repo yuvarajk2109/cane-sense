@@ -1,0 +1,162 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#sidebar {
+    width: 210px;
+    background: #2c3e50;
+    color: white;
+    padding-top: 50px;
+    padding-left: 15px;
+    position: fixed;
+    top: 0;
+    left: -230px;
+    height: 100%;
+    transition: 0.3s;
+}
+
+#sidebar a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin: 15px 0;
+}
+
+#sidebarToggle {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #2c3e50;
+    color: white;
+    border: 5px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#main {
+    flex: 1;
+    display: flex;
+    margin-left: 0;
+    transition: 0.3s;
+    width: 100%;
+}
+
+#caneSight {
+    width: 30%;
+    background: #ecf0f1;
+    padding-top: 40px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#previewContainer {
+  margin-top: 15px;
+}
+
+#previewImage {
+  max-width: 90%;
+  height: 90%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#caneSpeak {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    background: #fdfdfd;
+    border-left: 1px solid #ccc;
+}
+
+#chatHistory {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.chat-message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.user {
+    background: #d1f5d3;
+    align-self: flex-end;
+}
+
+.bot {
+    background: #f1f1f1;
+    align-self: flex-start;
+}
+
+#chatInputArea {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 10px;
+}
+
+#sendBtn, #micBtn {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #3498db;
+    color: white;
+}
+
+#historySidebar {
+    width: 200px;
+    background: #bdc3c7;
+    padding: 15px;
+    position: absolute;
+    right: -230px;
+    top: 0;
+    height: 100%;
+    transition: 0.3s;
+    overflow-y: auto;
+}
+
+#historyToggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#historySidebar #historyClose {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    margin-bottom: 10px;
+}
+
+#historyContent {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+}

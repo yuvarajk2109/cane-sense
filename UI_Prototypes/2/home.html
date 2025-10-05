@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prototype</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="sidebar">
+        <h2>Menu</h2>
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+    </div>
+    <button id="sidebarToggle">☰</button>
+
+    <div id="main">
+        <div id="caneSight">
+            <h2>CaneSight</h2>
+            <p>Upload an image of sugarcane leaf:</p>
+            <input type="file" id="imageUpload">
+            <div id="previewContainer">
+                <img id="previewImage" alt="Uploaded Preview" style="display:none;">
+            </div>
+            <p id="classificationResult"></p>
+        </div>
+
+        <div id="caneSpeak">
+            <button id="historyToggle">Past Chats</button>
+            <div id="chatHistory"></div>
+            <div id="chatInputArea">
+                <input type="text" id="chatInput" placeholder="Ask something...">
+                <button id="micBtn">🎤</button>
+                <button id="sendBtn">Send</button>
+            </div>
+        </div>
+
+        <div id="historySidebar">
+            <button id="historyClose">X</button>
+            <div id="historyContent">
+                <h3>Past Chats</h3>
+                <ul id="pastChats"></ul>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
