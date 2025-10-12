@@ -1,0 +1,17 @@
+                  precision    recall  f1-score   support
+
+Banded Chlorosis       0.99      0.99      0.99        94
+      Brown Rust       0.95      1.00      0.98        63
+      Brown Spot       1.00      0.99      0.99       345
+      Dried Leaf       1.00      1.00      1.00        69
+    Grassy Shoot       0.97      1.00      0.99        69
+    Healthy Leaf       1.00      1.00      1.00        86
+    Pokkah Boeng       0.98      0.93      0.96        59
+        Sett Rot       1.00      1.00      1.00       130
+            Smut       0.94      0.98      0.96        63
+   Viral Disease       1.00      1.00      1.00       133
+     Yellow Leaf       1.00      0.99      0.99       239
+
+        accuracy                           0.99      1350
+       macro avg       0.98      0.99      0.99      1350
+    weighted avg       0.99      0.99      0.99      1350

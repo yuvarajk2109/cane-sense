@@ -1,0 +1,15 @@
+Class                 Brier Score
+--------------------------------
+Banded Chlorosis           0.0020
+Brown Rust                 0.0016
+Brown Spot                 0.0029
+Dried Leaf                 0.0004
+Grassy Shoot               0.0007
+Healthy Leaf               0.0004
+Pokkah Boeng               0.0027
+Sett Rot                   0.0006
+Smut                       0.0029
+Viral Disease              0.0007
+Yellow Leaf                0.0021
+--------------------------------
+Overall                    0.0015
