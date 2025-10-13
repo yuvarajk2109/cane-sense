@@ -1,16 +1,31 @@
-# Multilevel Networking Approaches and Voice-Based Pathways for Real-Time Sugarcane Disease Classification and Control
+# CaneSense
 
-In Tamil Nadu, sugarcane is one of the most significant cash crops. However, with the high reward nature of this crop, there also comes many high-risk points for farmers. One such major risk-point is sugarcane diseases, which seriously impacts the yield of sugarcane crops. Early detection and classification of these diseases through novel multilevel networking approaches is aimed to be implemented in a user-friendly interface to tackle this high risk-point.
+**CaneSense** is a novel system for sugarcane disease detection, classification, and control, designed to help farmers maximize crop yield with ease.
 
-### Goals
+## Features
 
-+ To early detect and classify different varieties of diseases in sugarcane crops, including but not limited to red rot, mosaic disease, smut, pokkah boeng, yellow leaf, grassy shoot.
-+ To enable initiatives to localize and prevent disease spread through water irrigation control mechanisms through a recommender system trained on thorough sugarcane cultivation data.
-+ To provide simplified, easy-to-use voice-based navigational pathways in native languages for efficient and effective access of the system for farmers.
-+ To achieve high accuracy and speed in disease classification through minimal epoch and optimized parameter training.
+### CaneSight
+- Multi-level stacked deep learning ensemble using **CNN** and **LSTM**.
+- Classifies sugarcane diseases from leaf images with **99.62% accuracy**.
+- Reliable in real-world scenarios.
 
-### Novelty
+### CaneSpeak
+- Natural language assistant (text & voice).
+- Provides actionable guidelines for controlling classified diseases.
+- Supports multiple languages.
+- Uses embeddings and similarity search to map user queries to validated answers.
 
-+ Achieving maximal coverage of various sugarcane disease types, using balanced data from different sources and elegantly combining them, and suggesting appropriate irrigation control mechanisms.
-+ Providing various input and output transmission modes, making the system user-friendly and universal.
-+ Focusing on weeds, pests, and diseases, thereby enabling a comprehensive study and handling of various factors that affect sugarcane cultivation.
+## Benefits
+- Real-time, interactive interface for farmers.
+- Comprehensive disease detection and control.
+- User-friendly and easy to navigate.
+
+## Getting Started
+1. Clone the repository:  
+
+   ```bash
+   git clone https://github.com/yuvarajk2109/CaneSense.git
+   ```
+2. Create virtual environment, activate it, and install necessary Python packages as given in installs.txt.
+3. Download the required dataset - choose anything from dataset_citations.md.
+4. Based on the dataset downloaded, go to CaneSight/CaneSight.ipynb, and alter the model_name variable. The model_name variable can be main or mendeley_1 or mendeley_2, depending on the dataset downloaded.
