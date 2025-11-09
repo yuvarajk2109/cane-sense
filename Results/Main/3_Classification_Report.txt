@@ -1,0 +1,12 @@
+                  precision    recall  f1-score   support
+
+BacterialBlights       1.00      1.00      1.00       960
+         Healthy       0.99      1.00      0.99       627
+          Mosaic       1.00      0.99      0.99       554
+          RedRot       0.99      0.99      0.99       622
+            Rust       0.99      1.00      0.99       617
+          Yellow       1.00      0.99      0.99       606
+
+        accuracy                           0.99      3986
+       macro avg       0.99      0.99      0.99      3986
+    weighted avg       0.99      0.99      0.99      3986
