@@ -2,3 +2,4 @@ venv/
 Datasets/
 Saved_Models/
 *.pth
+question.txt
