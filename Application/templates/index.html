@@ -12,7 +12,9 @@
         <a href="#">About Us</a>
         <a href="#">Contact</a>
     </div>
-    <button id="sidebarToggle">☰</button>
+    <button id="sidebarToggle">
+        <img src="{{ url_for('static', filename='images/sidebar.svg') }}" alt="Sidebar Icon" id="sidebarIcon">
+    </button>
 
     <div id="main">
         <div id="caneSight">
@@ -23,6 +25,11 @@
                 <img id="previewImage" alt="Uploaded Preview" style="display:none;">
             </div>
             <p id="classificationResult"></p>
+            <div id="classifyLoader" class="loader hidden">
+                <div class="dot" style="--i:0"></div>
+                <div class="dot" style="--i:1"></div>
+                <div class="dot" style="--i:2"></div>
+            </div>
         </div>
 
         

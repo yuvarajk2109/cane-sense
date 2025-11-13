@@ -16,10 +16,19 @@ document.addEventListener("DOMContentLoaded", () => {
         historySidebar.style.right = "-300px";
     });
     const imageUpload = document.getElementById("imageUpload");
-    const previewImage = document.getElementById("previewImage");
+    const previewImage = document.getElementById("previewImage");    
+    const classifyLoader = document.getElementById("classifyLoader");
     const classificationResult = document.getElementById("classificationResult");
     imageUpload.addEventListener("change", async () => {
         if (!imageUpload.files || imageUpload.files.length === 0) return;
+
+        clearChat();
+        hideChatLoader();  
+
+        classificationResult.textContent = "";
+        classificationResult.classList.remove("filled");
+
+        classifyLoader.classList.remove("hidden");
         const file = imageUpload.files[0];
         const reader = new FileReader();
         reader.onload = e => {
@@ -32,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const res = await fetch("/upload-image", { method: "POST", body: formData });
             const data = await res.json();
+            classifyLoader.classList.add("hidden");
             if (data.success) {
                 classificationResult.innerHTML = `
                     <div>
@@ -39,6 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         <strong>Confidence:</strong> ${(data.confidence * 100).toFixed(2)}%
                     </div>
                 `;
+                if (data.message) {
+                    addMessage("bot", data.message.replace(/\n/g, "<br>"));
+                }
             } else {
                 classificationResult.textContent = "Classification failed: " + (data.error || "unknown");
             }
@@ -47,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
     });
 
+    const chatLoader = document.getElementById("chatLoader");
     const chatHistory = document.getElementById("chatHistory");
     const chatInput = document.getElementById("chatInput");
     const sendBtn = document.getElementById("sendBtn");
@@ -56,15 +70,42 @@ document.addEventListener("DOMContentLoaded", () => {
     function addMessage(sender, text) {
         const msg = document.createElement("div");
         msg.classList.add("chat-message", sender === "user" ? "user" : "bot");
-        msg.textContent = text;
+        msg.innerHTML = text;
         chatHistory.appendChild(msg);
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
+
+    function showChatLoader() {
+        const oldLoader = document.querySelector(".chat-loader");
+        if (oldLoader) oldLoader.remove();
+
+        const loader = document.createElement("div");
+        loader.classList.add("chat-loader");
+
+        loader.innerHTML = `
+            <div class="dot" style="--i:0"></div>
+            <div class="dot" style="--i:1"></div>
+            <div class="dot" style="--i:2"></div>
+        `;
+
+        chatHistory.appendChild(loader);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+
+        return loader;
+    }
+
+    function hideChatLoader() {
+        const loader = document.querySelector(".chat-loader");
+        if (loader) loader.remove();
+    }
+
 
     async function askServer(questionText) {
         console.log("Sending to server:", questionText);
         addMessage("user", questionText);
         sessionHistory.push({ sender: "user", text: questionText });
+
+        const loader = showChatLoader();
 
         const payload = { question: questionText };
         try {
@@ -74,8 +115,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(payload)
             });
             const data = await res.json();
+            hideChatLoader();  
             if (data.success) {
-                addMessage("bot", data.answer + (data.canonical_question ? `\n\n(Matched: ${data.canonical_question} | Score: ${(data.score * 100).toFixed(2)}% )` : ""));
+                addMessage("bot",
+                    data.answer +
+                    (data.canonical_question
+                        ? `<br><span class="match-info">(Matched: ${data.canonical_question} | Score: ${(data.score * 100).toFixed(2)}%)</span>`
+                        : ""
+                    )
+                );
                 sessionHistory.push({ sender: "bot", text: data.answer });
             } else {
                 addMessage("bot", "Error: " + (data.error || "Unknown"));
@@ -220,5 +268,10 @@ document.addEventListener("DOMContentLoaded", () => {
             console.warn("Session clear failed:", err);
         }
     });
+
+    function clearChat() {
+        chatHistory.innerHTML = "";
+        sessionHistory = [];
+    }
 
 });
