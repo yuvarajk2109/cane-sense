@@ -1,5 +1,9 @@
-venv/
-Datasets/
-Saved_Models/
+venv
+Datasets
+Saved_Models
 *.pth
 question.txt
+Application/static/uploads
+Application/static/json/*
+!Application/static/json/mapper.json
+Prediction/image_uploads
