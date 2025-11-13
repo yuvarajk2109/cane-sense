@@ -1,16 +1,43 @@
-import torch
-from torch import nn, optim
-from torch.utils.data import DataLoader, random_split, Dataset
-from torchvision import datasets, transforms
+import os
+from datetime import datetime
+
+import numpy as np
+
+from collections import Counter
 import random
+
+import torch
+from torch import optim
+from torch import nn
+from torch.utils.data import Dataset, DataLoader, random_split
+from torch.optim import LBFGS
+
+import torchvision.datasets as datasets
+import torchvision.transforms as transforms
+
+from sklearn.model_selection import StratifiedShuffleSplit
+
+import warnings
+warnings.filterwarnings("ignore")
+
+model_name = "main"
+if model_name == "main":
+    data_dir = "../Datasets/main/"
+    folder_name = "Main"
+elif model_name == "mendeley_1":
+    data_dir = "../Datasets/mendeley_1/"
+    folder_name = "Mendeley_1"
+elif model_name == "mendeley_2":
+    data_dir = "../Datasets/mendeley_2/"
+    folder_name = "Mendeley_2"
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-data_dir = "dataset/"
-img_size = 128
 batch_size = 16
-seq_len = 3
-train_split = 0.8         
+seq_len = 3    
+train_split = 0.8    
+
+img_size = 224
 
 feature_dim = 512
 hidden_dim = 256
@@ -23,12 +50,15 @@ weight_decay = 1e-4
 scheduler_type = "cosine"
 label_smoothing = 0.05
 
-
 seed = 42
 torch.manual_seed(seed)
 random.seed(seed)
 
-save_path = "cane_sight.pth"
+save_dir = os.path.join("..", f"Saved_Models\{folder_name}")
+os.makedirs(save_dir, exist_ok=True)
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+
+save_path = os.path.join(save_dir, f"{model_name}_{timestamp}.pth")  
 
 transform = transforms.Compose([
     transforms.Resize((img_size, img_size)),
@@ -67,9 +97,12 @@ dataset = SequenceDataset(root=data_dir, transform=transform, seq_len=seq_len)
 class_names = dataset.classes
 num_classes = len(class_names)
 
-train_size = int(train_split * len(dataset))
-test_size = len(dataset) - train_size
-train_dataset, test_dataset = random_split(dataset, [train_size, test_size])
+targets = [label for _, label in dataset.dataset.samples]
+sss = StratifiedShuffleSplit(n_splits=1, test_size=(1-train_split), random_state=seed)
+train_idx, test_idx = next(sss.split(np.zeros(len(targets)), targets))
+
+train_dataset = torch.utils.data.Subset(dataset, train_idx)
+test_dataset = torch.utils.data.Subset(dataset, test_idx)
 
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
