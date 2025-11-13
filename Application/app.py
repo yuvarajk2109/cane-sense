@@ -1,12 +1,12 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session
 
 from werkzeug.utils import secure_filename
 import os
 import json
 from pathlib import Path
 from PIL import Image
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# from sklearn.metrics.pairwise import cosine_similarity
 from langdetect import detect, LangDetectException
 
 import torch
@@ -161,6 +161,15 @@ MODEL_PATH = PARENT_DIR / "Saved_Models" / "Main.pth" / 'cane_sight.pth'
 
 MAPPER_PATH = BASE_DIR / "static" / "json" / "mapper.json"
 
+predicted_class_map = {
+    "BacterialBlights": "Bacterial Blight",
+    "Healthy": "Healthy",
+    "Mosaic": "Mosaic Disease",
+    "RedRot": "Red Rot Disease",
+    "Rust": "Rust Disease",
+    "Yellow": "Yellow Leaf Disease"
+}
+
 with open(MAPPER_PATH, "r", encoding="utf-8") as f:
     MAPPER = json.load(f)
 
@@ -184,7 +193,16 @@ def upload_image():
     session["last_image"] = f"/static/uploads/{filename}"
     session["predicted_class"] = predicted_class
 
-    return jsonify({"success": True, "filename": session["last_image"], "predicted_class": predicted_class, "confidence": confidence})
+    disease_entry = next((d for d in MAPPER if d["disease"] == predicted_class), None)
+
+    return jsonify(
+        {
+            "success": True, 
+            "filename": session["last_image"], 
+            "predicted_class": predicted_class_map[predicted_class],
+            "confidence": confidence,
+            "message": disease_entry["messageHTML"] if disease_entry else ""
+        })
 
 def find_best_answer(question_text, lang_detected, top_k=1, disease_name="Healthy"):
     candidates = []
