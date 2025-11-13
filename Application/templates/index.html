@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>CaneSense</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/style.css') }}">
+    </head>
+<body>
+    <div id="sidebar">
+        <h2>Menu</h2>
+        <a href="#">Home</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+    </div>
+    <button id="sidebarToggle">☰</button>
+
+    <div id="main">
+        <div id="caneSight">
+            <h2>CaneSense</h2>
+            <p>Upload an image of sugarcane leaf:</p>
+            <input type="file" id="imageUpload" accept="image/*">
+            <div id="previewContainer">
+                <img id="previewImage" alt="Uploaded Preview" style="display:none;">
+            </div>
+            <p id="classificationResult"></p>
+        </div>
+
+        
+        <div id="caneSpeak">
+            <div id="chatHeader">
+                <button id="clearChatBtn">Clear Chat</button>
+                <button id="historyToggle">Past Chats</button>
+            </div>
+            <div id="chatHistory"></div>
+            <div id="chatInputArea">
+                <div id="inputWrapper">
+                    <input type="text" id="chatInput" placeholder="Ask something...">
+                    <span id="listeningIndicator">Listening... Press again to stop.</span>
+                </div>
+                <button id="micBtn" title="Use voice input">
+                    <img src="{{ url_for('static', filename='images/mic.svg') }}" alt="Mic Icon" id="micIcon">
+                </button>
+                <button id="sendBtn">
+                    <img src="{{ url_for('static', filename='images/send.svg') }}" alt="Send Icon" id="sendIcon">
+                </button>
+            </div>
+        </div>
+
+        <div id="historySidebar">
+            <button id="historyClose">X</button>
+            <div id="historyContent">
+                <h3>Past Chats</h3>
+                <ul id="pastChats"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
