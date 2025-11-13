@@ -7,3 +7,10 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 pip install tqdm
 pip install torchmetrics
 pip install scikit-learn
+pip install ipywidgets
+pip install pillow
+pip install flask
+pip install werkzeug
+pip install langdetect
+pip install sentence_transfomers
+pip install faiss-cpu
