@@ -1,16 +1,30 @@
+1: Virtual Environment Creation and Activation
 python -m venv venv
 venv\Scripts\activate
+
+2: Essential Python Modules
 pip install pandas
 pip install matplotlib
 pip install seaborn
+
+3: Python Modules for Image Classification and Evaluation
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu126
 pip install tqdm
 pip install torchmetrics
 pip install scikit-learn
 pip install ipywidgets
 pip install pillow
+
+4: Python Modules for Web Application, File Handling
 pip install flask
 pip install werkzeug
+
+5: Python Modules for NLP
 pip install langdetect
+pip install openai-whisper
 pip install sentence_transfomers
 pip install faiss-cpu
+
+6: ffmpeg Installation for NLP - Open Powershell in Administrator Mode
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+choco install ffmpeg-full
