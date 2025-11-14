@@ -937,7 +937,7 @@
     ]
     },
     { 
-        "disease": "YellowLeaf",
+        "disease": "Yellow",
         "message": "Disease Detected: Yellow Leaf Disease (YLD)\n\nCaused by Sugarcane Yellow Leaf Virus (SCYLV). Leaves turn yellow from the midrib outward. Severely infected plants show reduced sugar content.\n\nRecommended Actions:\n• Remove infected clumps.\n• Control aphids to stop virus spread.\n• Use virus-free planting materials.\n• Provide balanced nutrients.",
         "messageHTML": "<strong>Disease Detected: Yellow Leaf Disease (YLD)</strong><br><br>Caused by Sugarcane Yellow Leaf Virus (SCYLV). Leaves turn yellow from the midrib outward. Severely infected plants show reduced sugar content.<br><br><strong>Recommended Actions:</strong><ul><li>Remove infected clumps.</li><li>Control aphids to stop virus spread.</li><li>Use virus-free planting materials.</li><li>Provide balanced nutrients.</li></ul>",
         "quesans": [
@@ -5391,7 +5391,53 @@
             "ta": "கரும்பு நோயின்றி வளர்வதற்கு மிதமான ஈரப்பதத்துடன் கூடிய வெப்பமான வானிலை மற்றும் நல்ல காற்றோட்டம் அவசியம். 26°C முதல் 32°C வரை வெப்பநிலை ஆரோக்கியமான வளர்ச்சிக்கு உகந்தது. அதிக ஈரப்பதம் மற்றும் நீர் தேங்கல் நோய் ஏற்பட வாய்ப்பை அதிகரிக்கும். சரியான வடிகால் வசதி, போதுமான வெளிச்சம் மற்றும் மண் சுத்தம் பூஞ்சை மற்றும் பாக்டீரியா தொற்றை குறைக்கும்.",
             "ta_en": "Karumbu noi illama valarathaikku warm and moderate humidity condition thevai, good air circulation irukkanum. 26°C to 32°C temperature range best for healthy growth. Adhiga erappadham or water stagnation disease risk-a increase pannum. Well-drained soil, sunlight, and field cleanliness fungus and bacteria infection-ai reduce pannum."
         }
+        },
+        {
+        "canonical_question": "Thank you.",
+        "sub_questions": {
+            "en": [
+                "Thanks",
+                "Thank you very much",
+                "Okay, thanks",
+                "Thank you for the help",
+                "Thanks a lot",
+                "Alright, thank you",
+                "Thank you for the information",
+                "Good, thanks",
+                "Great, thank you",
+                "Thank you for your support"
+            ],
+            "ta": [
+                "நன்றி",
+                "மிகவும் நன்றி",
+                "சரி, நன்றி",
+                "உதவிக்கு நன்றி",
+                "மிகுந்த நன்றி",
+                "தகவலுக்கு நன்றி",
+                "சரி, மிகவும் நன்றி",
+                "உங்கள் உதவிக்கு நன்றி",
+                "பரவாயில்லை, நன்றி",
+                "சரி, உங்கள் தகவலுக்கு நன்றி"
+            ],
+            "ta_en": [
+                "Nandri",
+                "Miga nandri",
+                "Sari, nandri",
+                "Udhavikku nandri",
+                "Mugavum nandri",
+                "Thagavalukku nandri",
+                "Unga help-kku nandri",
+                "Sari thanks",
+                "Romba nandri",
+                "Ungal support-ku nandri"
+            ]
+        },
+        "answer": {
+            "en": "You're welcome. Feel free to ask if you need anything else.",
+            "ta": "வரவேற்கிறேன். மேலும் ஏதேனும் தேவையிருந்தால் கேளுங்கள்.",
+            "ta_en": "Welcome. Innum ethavathu thevai na kekkalam."
         }
+    }
     ]
 }
 ]
