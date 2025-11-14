@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, send_from_directory, session
 
 from werkzeug.utils import secure_filename
 import os
@@ -176,6 +176,14 @@ with open(MAPPER_PATH, "r", encoding="utf-8") as f:
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        app.static_folder, 
+        'favicon.ico', 
+        mimetype='image/vnd.microsoft.icon'
+    )
 
 @app.route("/upload-image", methods=["POST"])
 def upload_image():
