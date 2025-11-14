@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!imageUpload.files || imageUpload.files.length === 0) return;
 
         clearChat();
-        hideChatLoader();  
+        showChatLoader();  
 
         classificationResult.textContent = "";
         classificationResult.classList.remove("filled");
@@ -49,8 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span class="score-info"><strong>Confidence:</strong> ${(data.confidence * 100).toFixed(2)}%</span>
                     </div>
                 `;
+                hideChatLoader();
                 if (data.message) {
                     addMessage("bot", data.message.replace(/\n/g, "<br>"));
+                } else {
+                    addMessage("bot", "Unable to fetch data on " + data.predicted_class + ". Please try again later.");
                 }
             } else {
                 classificationResult.textContent = "Classification failed: " + (data.error || "unknown");
@@ -243,6 +246,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 askServer(data.text); 
             } else {
                 addMessage("bot", "Voice transcription failed. Please try again.");
+                hideChatLoader();
             }
         } catch (err) {
             addMessage("bot", "ASR error: " + err.message);
