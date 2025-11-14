@@ -13,6 +13,9 @@ import torch
 from torch import nn
 import torchvision.transforms as transforms
 
+import whisper
+import subprocess
+
 from sentence_transformers import SentenceTransformer
 import faiss
 
@@ -118,20 +121,6 @@ class CaneSight(nn.Module):
 
         features = torch.stack(features, dim=1)
         return self.prognet(features)
-    
-model_name = "main"
-folder_name = "Main"
-model_dir = os.path.join("..", f"Saved_Models\\{folder_name}")
-model_path = os.path.join(model_dir, "cane_sight_final.pth")
-
-symnet = SymNet()
-prognet = ProgNet(num_classes=num_classes, dropout=dropout)
-model = CaneSight(symnet, prognet).to(device)
-
-model.load_state_dict(torch.load(model_path, map_location=device))
-model.eval()
-
-embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
 def predict_image(img_path):
     img = Image.open(img_path).convert("RGB")
@@ -148,69 +137,6 @@ def predict_image(img_path):
     print(f"Predicted Class: {class_names[pred_idx]}")
     print(f"Confidence: {confidence:.4f}")
     return class_names[pred_idx], confidence
-
-app = Flask(__name__)
-app.secret_key = "warspinix"
-BASE_DIR = Path(__file__).resolve().parent
-PARENT_DIR = BASE_DIR.parent
-
-UPLOAD_FOLDER = BASE_DIR / "static" / "uploads"
-UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
-
-MODEL_PATH = PARENT_DIR / "Saved_Models" / "Main.pth" / 'cane_sight.pth'
-
-MAPPER_PATH = BASE_DIR / "static" / "json" / "mapper.json"
-
-predicted_class_map = {
-    "BacterialBlights": "Bacterial Blight",
-    "Healthy": "Healthy",
-    "Mosaic": "Mosaic Disease",
-    "RedRot": "Red Rot Disease",
-    "Rust": "Rust Disease",
-    "Yellow": "Yellow Leaf Disease"
-}
-
-with open(MAPPER_PATH, "r", encoding="utf-8") as f:
-    MAPPER = json.load(f)
-
-@app.route("/")
-def index():
-    return render_template("index.html")
-
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(
-        app.static_folder, 
-        'favicon.ico', 
-        mimetype='image/vnd.microsoft.icon'
-    )
-
-@app.route("/upload-image", methods=["POST"])
-def upload_image():
-    if "image" not in request.files:
-        return jsonify({"success": False, "error": "No file part"}), 400
-    file = request.files["image"]
-    if file.filename == "":
-        return jsonify({"success": False, "error": "No selected file"}), 400
-
-    filename = secure_filename(file.filename)
-    save_path = UPLOAD_FOLDER / filename
-    file.save(save_path)
-
-    predicted_class, confidence = predict_image(save_path)
-    session["last_image"] = f"/static/uploads/{filename}"
-    session["predicted_class"] = predicted_class
-
-    disease_entry = next((d for d in MAPPER if d["disease"] == predicted_class), None)
-
-    return jsonify(
-        {
-            "success": True, 
-            "filename": session["last_image"], 
-            "predicted_class": predicted_class_map[predicted_class],
-            "confidence": confidence,
-            "message": disease_entry["messageHTML"] if disease_entry else ""
-        })
 
 def find_best_answer(question_text, lang_detected, top_k=1, disease_name="Healthy"):
     candidates = []
@@ -279,6 +205,43 @@ def find_best_answer(question_text, lang_detected, top_k=1, disease_name="Health
         "detected_lang": lang_detected
     }  
 
+BASE_DIR = Path(__file__).resolve().parent
+PARENT_DIR = BASE_DIR.parent
+IMAGE_UPLOAD_FOLDER = BASE_DIR / "static" / "uploads" / "images"
+IMAGE_UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
+AUDIO_UPLOAD_FOLDER = BASE_DIR / "static" / "uploads" / "audio"
+AUDIO_UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
+AUDIO_SAVE_LOCATION = AUDIO_UPLOAD_FOLDER / "audio.webm"
+
+MODEL_PATH = PARENT_DIR / "Saved_Models" / "Main" / 'cane_sight_final.pth'
+MAPPER_PATH = BASE_DIR / "static" / "json" / "mapper.json"
+
+symnet = SymNet()
+prognet = ProgNet(num_classes=num_classes, dropout=dropout)
+model = CaneSight(symnet, prognet).to(device)
+
+model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+model.eval()
+
+predicted_class_map = {
+    "BacterialBlights": "Bacterial Blight",
+    "Healthy": "Healthy",
+    "Mosaic": "Mosaic Disease",
+    "RedRot": "Red Rot Disease",
+    "Rust": "Rust Disease",
+    "Yellow": "Yellow Leaf Disease"
+}
+
+listener = whisper.load_model("small")
+
+embedder = SentenceTransformer("all-MiniLM-L6-v2")
+
+with open(MAPPER_PATH, "r", encoding="utf-8") as f:
+    MAPPER = json.load(f)
+
+app = Flask(__name__)
+app.secret_key = "warspinix"
+
     # tfidf = TfidfVectorizer().fit(corpus + [question_text])
     # corpus_vecs = tfidf.transform(corpus)
     # q_vec = tfidf.transform([question_text])
@@ -291,6 +254,79 @@ def find_best_answer(question_text, lang_detected, top_k=1, disease_name="Health
     #     "lang_key": candidates[best_idx]["lang_key"],
     #     "detected_lang": lang_detected
     # }
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        app.static_folder, 
+        'favicon.ico', 
+        mimetype='image/vnd.microsoft.icon'
+    )
+
+@app.route("/upload-image", methods=["POST"])
+def upload_image():
+    if "image" not in request.files:
+        return jsonify({"success": False, "error": "No file part"}), 400
+    file = request.files["image"]
+    if file.filename == "":
+        return jsonify({"success": False, "error": "No selected file"}), 400
+
+    filename = secure_filename(file.filename)
+    save_path = IMAGE_UPLOAD_FOLDER / filename
+    file.save(save_path)
+
+    predicted_class, confidence = predict_image(save_path)
+    session["last_image"] = f"/static/uploads/{filename}"
+    session["predicted_class"] = predicted_class
+
+    disease_entry = next((d for d in MAPPER if d["disease"] == predicted_class), None)
+
+    return jsonify(
+        {
+            "success": True, 
+            "filename": session["last_image"], 
+            "predicted_class": predicted_class_map[predicted_class],
+            "confidence": confidence,
+            "message": disease_entry["messageHTML"] if disease_entry else ""
+        })
+
+@app.route("/asr-whisper", methods=["POST"])
+def asr_whisper():
+    print("RAW request length:", request.content_length)
+    print("FILES keys:", list(request.files.keys()))
+    if "audio" not in request.files:
+        return jsonify(success=False, error="No audio received")
+
+    audio = request.files["audio"]
+    print("Received:", audio.filename, audio.content_type, audio.content_length)
+    
+    audio.save(AUDIO_SAVE_LOCATION)
+    print(type(AUDIO_SAVE_LOCATION))
+    print(type(str(AUDIO_SAVE_LOCATION)))
+    wav_path = AUDIO_SAVE_LOCATION.with_suffix(".wav")
+    print(type(wav_path))
+
+    try:
+        wav_path = AUDIO_SAVE_LOCATION.with_suffix(".wav")
+
+        subprocess.run([
+            "ffmpeg", "-y", "-i", str(AUDIO_SAVE_LOCATION),
+            "-ar", "16000", "-ac", "1",
+            wav_path
+        ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        result = listener.transcribe(str(wav_path))
+        print("ASR result: ", result)
+        text = result["text"].strip()
+        print("Resultant text: ", text)
+        return jsonify(success=True, text=text)
+    except Exception as e:
+        print("Error: ", e)
+        return jsonify(success=False, error=str(e))
 
 @app.route("/ask", methods=["POST"])
 def ask():
