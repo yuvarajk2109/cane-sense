@@ -7,3 +7,4 @@ Application/static/uploads
 Application/static/json/*
 !Application/static/json/mapper.json
 Prediction/image_uploads
+Results/CaneSpeak
