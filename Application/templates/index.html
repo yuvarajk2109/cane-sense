@@ -21,6 +21,7 @@
             <h2>CaneSense</h2>
             <p>Upload an image of sugarcane leaf:</p>
             <input type="file" id="imageUpload" accept="image/*">
+            <button id="uploadBtn">Choose File</button>
             <div id="previewContainer">
                 <img id="previewImage" alt="Uploaded Preview" style="display:none;">
             </div>
@@ -34,8 +35,14 @@
 
         <div id="caneSpeak">
             <div id="chatHeader">
-                <button id="clearChatBtn">Clear Chat</button>
-                <button id="historyToggle">Past Chats</button>
+                <div id="leftButtons">
+                    <button id="clearChatBtn">Clear Chat</button>
+                    <button id="languageBtn">தமிழ்</button>
+                </div>
+                <div id="rightButtons">
+                    <button id="expertBtn">Connect to Experts</button>
+                    <button id="historyToggle">Past Chats</button>
+                </div>
             </div>
             <div id="chatHistory"></div>
             <div id="chatInputArea">
@@ -60,6 +67,13 @@
             </div>
         </div>
     </div>
+    <div id="expertPopupOverlay">
+    <div id="expertPopup">
+        <h3 id="expertPopupText">Do you want to connect to an expert?</h3>
+        <button id="popupBtnYes">Yes</button>
+        <button id="popupBtnNo">No</button>
+    </div>
+    </div>  
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

@@ -1,10 +1,91 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+    let currentLang = "en";
+    const uiText = {
+        en: {
+            caneSenseTitle: "CaneSense",
+            menuHome: "Home",
+            menuAbout: "About Us",
+            menuContact: "Contact",
+            uploadBtn: "Choose File",
+            clearChat: "Clear Chat",
+            languageBtn: "தமிழ்",
+            pastChats: "Past Chats",
+            chatPlaceholder: "Ask something...",
+            listening: "Listening... Press again to stop.",
+            uploadLabel: "Upload an image of sugarcane leaf:",
+            classifiedDisease: "Classified Disease:",
+            confidence: "Confidence:",
+            processing: "Processing",
+            thinking: "Thinking",
+            unableToFetch: "Unable to fetch data on ",
+            transcriptionFailed: "Voice transcription failed. Please try again.",
+            pastChatsTitle: "Past Chats",
+            expertBtn: "Connect to Experts",
+            expertPopupText: "Do you want to connect to an expert?",
+            expertConfirmMsg: "An expert has been notified and will reach out soon."
+        },
+        ta: {
+            caneSenseTitle: "கேன் சென்ஸ்",
+            menuHome: "முகப்பு",
+            menuAbout: "எங்களைப் பற்றி",
+            menuContact: "தொடர்பு",
+            uploadBtn: "கோப்பு தேர்வு செய்",
+            clearChat: "செய்திகளை நீக்கு",
+            languageBtn: "English",
+            pastChats: "முந்தைய உரையாடல்கள்",
+            chatPlaceholder: "ஏதாவது கேளுங்கள்...",
+            listening: "கேட்கிறது... நிறுத்த மீண்டும் அழுத்தவும்.",
+            uploadLabel: "கரும்பு இலைப் படத்தை பதிவேற்றவும்:",
+            classifiedDisease: "வகைப்படுத்தப்பட்ட நோய்:",
+            confidence: "நம்பிக்கை:",
+            processing: "செயலாக்குகிறது",
+            thinking: "சிந்திக்கிறது",
+            unableToFetch: "தகவலை பெற முடியவில்லை: ",
+            transcriptionFailed: "குரல் மாற்றம் தோல்வியுற்றது. தயவு செய்து மீண்டும் முயற்சிக்கவும்.",
+            pastChatsTitle: "முந்தைய உரையாடல்கள்",
+            expertBtn: "நிபுணர்களை தொடர்பு கொள்ள",
+            expertPopupText: "நிபுணரை தொடர்பு கொள்ள விரும்புகிறீர்களா?",
+            expertConfirmMsg: "ஒரு நிபுணருக்கு தகவல் தெரிவிக்கப்பட்டுள்ளது. விரைவில் உங்களை தொடர்பு கொள்வார்."
+        }
+    };
+    function updateUILanguage() {
+        document.querySelector("#caneSight h2").textContent = uiText[currentLang].caneSenseTitle;
+        document.querySelector("#sidebar a:nth-of-type(1)").textContent = uiText[currentLang].menuHome;
+        document.querySelector("#sidebar a:nth-of-type(2)").textContent = uiText[currentLang].menuAbout;
+        document.querySelector("#sidebar a:nth-of-type(3)").textContent = uiText[currentLang].menuContact;
+        document.getElementById("uploadBtn").textContent = uiText[currentLang].uploadBtn;
+        document.getElementById("clearChatBtn").textContent = uiText[currentLang].clearChat;
+        document.getElementById("languageBtn").textContent = uiText[currentLang].languageBtn;
+        document.getElementById("historyToggle").textContent = uiText[currentLang].pastChats;
+        document.getElementById("chatInput").placeholder = uiText[currentLang].chatPlaceholder;
+        document.getElementById("listeningIndicator").textContent = uiText[currentLang].listening;
+        document.querySelector("#historyContent h3").textContent = uiText[currentLang].pastChatsTitle;
+        document.querySelector("#caneSight p").textContent = uiText[currentLang].uploadLabel;
+        document.getElementById("expertBtn").textContent = uiText[currentLang].expertBtn;
+        document.getElementById("expertPopupText").textContent = uiText[currentLang].expertPopupText;
+        document.getElementById("popupBtnYes").textContent = (currentLang === "en" ? "Yes" : "ஆம்");
+        document.getElementById("popupBtnNo").textContent = (currentLang === "en" ? "No" : "இல்லை");
+        const result = document.getElementById("classificationResult");
+        if (result.innerHTML.trim() !== "") {
+            result.innerHTML = result.innerHTML
+                .replace(/Classified Disease:/g, uiText[currentLang].classifiedDisease)
+                .replace(/Confidence:/g, uiText[currentLang].confidence)
+                .replace(/வகைப்படுத்தப்பட்ட நோய்:/g, uiText[currentLang].classifiedDisease)
+                .replace(/நம்பிக்கை:/g, uiText[currentLang].confidence);
+        }
+    }
+    const languageBtn = document.getElementById("languageBtn");
+    languageBtn.addEventListener("click", () => {
+        currentLang = currentLang === "en" ? "ta" : "en";
+        updateUILanguage();
+    });
+    
     const sidebar = document.getElementById("sidebar");
     const sidebarToggle = document.getElementById("sidebarToggle");    
     sidebarToggle.addEventListener("click", () => {
         sidebar.style.left = sidebar.style.left === "0px" ? "-230px" : "0px";
-    });
+    }); 
 
     const historySidebar = document.getElementById("historySidebar");
     const historyToggle = document.getElementById("historyToggle");
@@ -15,10 +96,16 @@ document.addEventListener("DOMContentLoaded", () => {
     historyClose.addEventListener("click", () => {
         historySidebar.style.right = "-300px";
     });
+
     const imageUpload = document.getElementById("imageUpload");
     const previewImage = document.getElementById("previewImage");    
     const classifyLoader = document.getElementById("classifyLoader");
     const classificationResult = document.getElementById("classificationResult");
+
+    document.getElementById("uploadBtn").addEventListener("click", () => {
+        imageUpload.click();
+    });
+
     imageUpload.addEventListener("change", async () => {
         if (!imageUpload.files || imageUpload.files.length === 0) return;
 
@@ -53,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (data.message) {
                     addMessage("bot", data.message.replace(/\n/g, "<br>"));
                 } else {
-                    addMessage("bot", "Unable to fetch data on " + data.predicted_class + ". Please try again later.");
+                    addMessage("bot", uiText[currentLang].unableToFetch + data.predicted_class + ".");
                 }
             } else {
                 classificationResult.textContent = "Classification failed: " + (data.error || "unknown");
@@ -83,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const loader = document.createElement("div");
         loader.classList.add("chat-loader", type);
 
-        const label = type === "user" ? "Processing" : "Thinking";
+        const label = type === "user" ? uiText[currentLang].processing : uiText[currentLang].thinking;
 
         loader.innerHTML = `
             <div class="bubble">
@@ -124,6 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await res.json();
             hideChatLoader();
             if (data.success) {
+                console.log(data);
                 addMessage("bot",
                     data.answer +
                     (data.canonical_question
@@ -245,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.success && data.text) {
                 askServer(data.text); 
             } else {
-                addMessage("bot", "Voice transcription failed. Please try again.");
+                addMessage("bot", uiText[currentLang].transcriptionFailed);
                 hideChatLoader();
             }
         } catch (err) {
@@ -341,11 +429,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("beforeunload", () => {
         if (sessionHistory.length > 0) {
-        const li = document.createElement("li");
-        const diseaseLabel = window.lastDisease || "Unknown Disease";
-        li.textContent = `Chat with ${diseaseLabel} — ${new Date().toLocaleString()}`;
-        pastChatsUl.appendChild(li);
+            const li = document.createElement("li");
+            const diseaseLabel = window.lastDisease || "Unknown Disease";
+            li.textContent = `Chat with ${diseaseLabel} — ${new Date().toLocaleString()}`;
+            pastChatsUl.appendChild(li);
         }
+    });
+
+    const expertBtn = document.getElementById("expertBtn");
+    const expertPopupOverlay = document.getElementById("expertPopupOverlay");
+    const popupBtnYes = document.getElementById("popupBtnYes");
+    const popupBtnNo = document.getElementById("popupBtnNo");
+
+    expertBtn.addEventListener("click", () => {
+        expertPopupOverlay.style.display = "flex"; 
+    });
+
+    popupBtnNo.addEventListener("click", () => {
+        expertPopupOverlay.style.display = "none";
+    });
+
+    popupBtnYes.addEventListener("click", () => {
+        expertPopupOverlay.style.display = "none";
+        addMessage("bot", uiText[currentLang].expertConfirmMsg);
     });
 
     async function refreshDisease() {
