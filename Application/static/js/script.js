@@ -112,6 +112,8 @@ document.addEventListener("DOMContentLoaded", () => {
         clearChat();
         showChatLoader();  
 
+        previewImage.style.display = "block";
+
         classificationResult.textContent = "";
         classificationResult.classList.remove("filled");
 
